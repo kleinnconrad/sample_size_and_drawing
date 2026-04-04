@@ -8,6 +8,7 @@ This repository provides Python utilities packaged as a **Databricks Asset Bundl
 3. [Sample Size Calculator (Cochran)](#sample-size-calculator-cochran)
 4. [Bernoulli Sampling](#bernoulli-sampling)
 5. [Deployment & Execution](#deployment--execution)
+6. [CI/CD Pipeline Architecture](#cicd-pipeline-architecture)
 
 ---
 
@@ -96,3 +97,25 @@ databricks bundle run cochran_sample_size
 ```Bash
 databricks bundle run bernoulli_sample_drawing
 ```
+
+## CI/CD Pipeline Architecture
+
+This repository utilizes GitHub Actions to automate the continuous integration and deployment (CI/CD) of the Databricks Asset Bundle. The pipeline ensures that any changes to the underlying statistical scripts or job configurations are rigorously validated and seamlessly deployed to the Databricks Serverless environment.
+
+### Deployment Trigger
+The automated workflow (`deploy_bundle.yml`) is triggered automatically upon a `push` to the `main` branch, specifically when modifications occur in critical paths:
+* `src/**/*.py`: Core PySpark sampling logic (Cochran & Bernoulli).
+* `resources/**/*.yml`: Databricks Job configurations and parameter mappings.
+* `databricks.yml`: The overarching asset bundle infrastructure definition.
+
+### Workflow Steps
+The pipeline executes on a headless Ubuntu runner and orchestrates the following steps:
+1. **Source Checkout:** Retrieves the latest committed code.
+2. **CLI Initialization:** Installs the official Databricks CLI (`setup-cli@main`) to enable bundle commands.
+3. **Bundle Validation:** Runs `databricks bundle validate` to verify the syntactic and structural integrity of the YAML configurations and file paths before attempting infrastructure changes.
+4. **Target Deployment:** Executes `databricks bundle deploy` to push the updated Python notebooks and job definitions to the Databricks workspace.
+
+### Security & Authentication
+Authentication with the Databricks environment is handled securely via GitHub Actions Secrets. No credentials are hardcoded into the repository.
+* **`DATABRICKS_HOST`**: The target Databricks Workspace URL.
+* **`DATABRICKS_TOKEN`**: A scoped Personal Access Token (PAT) authorizing the headless deployment process.
