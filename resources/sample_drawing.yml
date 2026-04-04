@@ -2,7 +2,7 @@ resources:
   jobs:
     bernoulli_sample_drawing:
       name: bernoulli_sample_drawing_process
-      max_concurrent_runs: 5
+      max_concurrent_runs: 4
       tasks:
         - task_key: execute_bernoulli
           notebook_task:
