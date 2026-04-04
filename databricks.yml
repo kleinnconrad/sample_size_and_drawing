@@ -1,0 +1,13 @@
+# databricks.yml
+bundle:
+  name: sample_size_and_drawing
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-91e4a242-418c.cloud.databricks.com

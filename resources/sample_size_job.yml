@@ -1,0 +1,17 @@
+# resources/sample_size_job.yml
+resources:
+  jobs:
+    cochran_sample_size:
+      name: cochran_sample_size_calculation
+      tasks:
+        - task_key: execute_cochran
+          job_cluster_key: shared_job_cluster
+          spark_python_task:
+            python_file: ../src/cochran.py
+
+      job_clusters:
+        - job_cluster_key: shared_job_cluster
+          new_cluster:
+            spark_version: 13.3.x-scala2.12
+            node_type_id: Standard_DS3_v2
+            num_workers: 1
