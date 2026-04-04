@@ -2,12 +2,13 @@ resources:
   jobs:
     bernoulli_sample_drawing:
       name: bernoulli_sample_drawing_process
-      environments:
-        - environment_key: serverless_python_env
-          spec:
-            client: "1"
+      max_concurrent_runs: 5
       tasks:
         - task_key: execute_bernoulli
-          environment_key: serverless_python_env
-          spark_python_task:
-            python_file: ../src/bernoulli_sampling.py
+          notebook_task:
+            notebook_path: ../src/bernoulli_sampling.py
+            base_parameters:
+              catalog: "workspace"
+              schema: "default"
+              table: "test_population"
+              target_size: "5"

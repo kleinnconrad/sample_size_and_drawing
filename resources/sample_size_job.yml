@@ -2,12 +2,15 @@ resources:
   jobs:
     cochran_sample_size:
       name: cochran_sample_size_calculation
-      environments:
-        - environment_key: serverless_python_env
-          spec:
-            client: "1"
+      max_concurrent_runs: 5
       tasks:
         - task_key: execute_cochran
-          environment_key: serverless_python_env
-          spark_python_task:
-            python_file: ../src/cochran.py
+          notebook_task:
+            notebook_path: ../src/cochran.py
+            base_parameters:
+              catalog: "workspace"
+              schema: "default"
+              table: "test_population"
+              error: "0.05"
+              proportion: "0.5"
+              confidence: "95"
