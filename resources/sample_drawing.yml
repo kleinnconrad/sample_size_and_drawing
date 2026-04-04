@@ -1,17 +1,8 @@
-# resources/sample_drawing.yml
 resources:
   jobs:
     bernoulli_sample_drawing:
       name: bernoulli_sample_drawing_process
       tasks:
         - task_key: execute_bernoulli
-          job_cluster_key: shared_job_cluster
           spark_python_task:
             python_file: ../src/bernoulli_sampling.py
-
-      job_clusters:
-        - job_cluster_key: shared_job_cluster
-          new_cluster:
-            spark_version: 13.3.x-scala2.12
-            node_type_id: Standard_DS3_v2
-            num_workers: 1
