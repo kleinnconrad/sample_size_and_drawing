@@ -2,7 +2,12 @@ resources:
   jobs:
     cochran_sample_size:
       name: cochran_sample_size_calculation
+      environments:
+        - environment_key: serverless_python_env
+          spec:
+            client: "1"
       tasks:
         - task_key: execute_cochran
+          environment_key: serverless_python_env
           spark_python_task:
             python_file: ../src/cochran.py
