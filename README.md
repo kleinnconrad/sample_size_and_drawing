@@ -128,12 +128,12 @@ The CI/CD pipeline includes a comprehensive test suite that runs automatically v
 
 The test suite is divided into three main components:
 
-## 1. Test Configuration (`conftest.py`)
+### Test Configuration (`conftest.py`)
 This file establishes the testing environment. 
 * **Local Spark Session:** It spins up a lightweight, local PySpark session (`local[1]`) specifically for the GitHub Actions runner. 
 * **Cost Efficiency:** By mocking the Spark environment locally, the pipeline validates Spark commands without needing to spin up or pay for a real Databricks cluster.
 
-## 2. Mathematical Logic Tests (`test_sampling_logic.py`)
+### Mathematical Logic Tests (`test_sampling_logic.py`)
 These unit tests validate the pure Python functions responsible for calculating sample sizes and probabilities. Because these do not rely on Spark, they execute instantly.
 
 * **Cochran Calculator Tests:**
@@ -145,7 +145,7 @@ These unit tests validate the pure Python functions responsible for calculating 
   * **Standard Calculation:** Verifies the translation of a target row count into the correct probability fraction (e.g., 1,000 out of 100,000 returns `0.01`).
   * **Oversampling Prevention:** Ensures that if a user requests more rows than the table contains, the fraction safely caps at `1.0` (100%) rather than throwing a mathematical error.
 
-## 3. PySpark Integration Tests (`test_spark_integration.py`)
+### PySpark Integration Tests (`test_spark_integration.py`)
 These tests use the local Spark session to verify that the generated mathematical parameters work correctly when passed into actual Databricks PySpark commands.
 
 * **Mock Data Generation:** Programmatically creates a mock DataFrame of 1,000 rows in memory to act as the test subject.
