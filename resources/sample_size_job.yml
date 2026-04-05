@@ -12,5 +12,5 @@ resources:
               schema: "default"
               table: "test_population"
               error: "0.05"
-              proportion: "0.4"
+              proportion: "0.5"
               confidence: "95"
