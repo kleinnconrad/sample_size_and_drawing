@@ -1,3 +1,5 @@
+[![Deploy Databricks GLM Pipeline](https://github.com/kleinnconrad/sample_size_and_drawing/actions/workflows/deploy_bundle.yml/badge.svg)](https://github.com/kleinnconrad/sample_size_and_drawing/actions/workflows/deploy_bundle.yml
+
 # Delta Table Sampling Utilities
 
 This repository provides Python utilities packaged as a **Databricks Asset Bundle (DAB)** to calculate statistically significant sample sizes and extract unbiased data subsets using PySpark.
