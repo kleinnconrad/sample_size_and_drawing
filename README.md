@@ -121,3 +121,34 @@ The pipeline executes on a headless Ubuntu runner and orchestrates the following
 Authentication with the Databricks environment is handled securely via GitHub Actions Secrets. No credentials are hardcoded into the repository.
 * **`DATABRICKS_HOST`**: The target Databricks Workspace URL.
 * **`DATABRICKS_TOKEN`**: A scoped Personal Access Token (PAT) authorizing the headless deployment process.
+
+### Pipeline Test Suite Overview
+
+The CI/CD pipeline includes a comprehensive test suite that runs automatically via GitHub Actions before any code is deployed to the Databricks workspace. This "shift-left" approach ensures both the mathematical accuracy of the sampling formulas and the stability of the PySpark execution.
+
+The test suite is divided into three main components:
+
+## 1. Test Configuration (`conftest.py`)
+This file establishes the testing environment. 
+* **Local Spark Session:** It spins up a lightweight, local PySpark session (`local[1]`) specifically for the GitHub Actions runner. 
+* **Cost Efficiency:** By mocking the Spark environment locally, the pipeline validates Spark commands without needing to spin up or pay for a real Databricks cluster.
+
+## 2. Mathematical Logic Tests (`test_sampling_logic.py`)
+These unit tests validate the pure Python functions responsible for calculating sample sizes and probabilities. Because these do not rely on Spark, they execute instantly.
+
+* **Cochran Calculator Tests:**
+  * **Infinite Population:** Verifies that standard statistical inputs (e.g., 95% confidence, 5% margin of error) return the textbook baseline sample size (385 rows).
+  * **Finite Population Correction:** Ensures the formula correctly reduces the required sample size when applied to a known, smaller table.
+  * **Edge Cases:** Confirms the calculator safely returns `0` if an empty table is passed.
+
+* **Bernoulli Fraction Tests:**
+  * **Standard Calculation:** Verifies the translation of a target row count into the correct probability fraction (e.g., 1,000 out of 100,000 returns `0.01`).
+  * **Oversampling Prevention:** Ensures that if a user requests more rows than the table contains, the fraction safely caps at `1.0` (100%) rather than throwing a mathematical error.
+
+## 3. PySpark Integration Tests (`test_spark_integration.py`)
+These tests use the local Spark session to verify that the generated mathematical parameters work correctly when passed into actual Databricks PySpark commands.
+
+* **Mock Data Generation:** Programmatically creates a mock DataFrame of 1,000 rows in memory to act as the test subject.
+* **Bernoulli Execution & Variance:** Applies the `.sample()` method to the mock data. It asserts that the final row count falls within a mathematically acceptable variance range (e.g., aiming for 100 rows will return roughly between 75 and 125 rows), validating true Bernoulli behavior.
+* **Duplicate Prevention:** Runs the sampling algorithm and explicitly checks the output to guarantee that no duplicate IDs were selected, ensuring `withReplacement=False` is strictly honored by the engine.
+  
