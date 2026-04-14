@@ -78,7 +78,6 @@ databricks auth login --host "https://<your-workspace-url>"
 Validate your bundle configuration syntax and deploy the code and resources to your workspace.
 
 ```Bash
-# Validate the YAML configurations
 databricks bundle validate
 ```
 
@@ -91,7 +90,6 @@ databricks bundle deploy
 Once deployed, you can trigger the individual jobs directly from your terminal. The scripts dynamically query the active metastore to fetch exact table row counts and execute the mathematically rigorous sampling logic.
 
 ```Bash
-# Run the Cochran sample size calculation
 databricks bundle run cochran_sample_size
 ```
 
