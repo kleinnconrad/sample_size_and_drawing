@@ -15,7 +15,7 @@ This repository provides Python utilities packaged as a **Databricks Asset Bundl
 ---
 
 ## Overview
-Arbitrary sampling (e.g., `LIMIT 10000`) often creates biased, needlessly large, or statistically weak datasets. These utilities solve this by providing mathematical rigor and true randomization, optimizing cloud compute costs while ensuring reliable data products for ML, A/B testing, and analytics.
+Arbitrary sampling (e.g., `LIMIT 10000`) often creates biased, needlessly large, or statistically weak datasets. These utilities solve this by providing cloud compute cost friendly randomization and profound sample drawing to ensure reliable and cost effective dataset creation for ML, A/B testing, and analytics.
 
 By leveraging Databricks Asset Bundles, these utilities are structured for seamless, reproducible deployments across Databricks Serverless environments, defining infrastructure and code as a single deployable unit.
 
